@@ -1,12 +1,6 @@
 {
   "pessoas": [
     {
-      "id": "291b",
-      "nome": "Carolina",
-      "idade": 42,
-      "cidade": "Valparaiso"
-    },
-    {
       "id": "b094",
       "nome": "Ana",
       "idade": 42,
@@ -22,19 +16,15 @@
       "id": "9432",
       "nome": "Rafael",
       "idade": 16,
-      "cidade": "Rio de Janeiro"
+      "cidade": "São Paulo"
     },
+    
+   
     {
-      "id": "36f4",
-      "nome": "Carolina",
-      "idade": 23,
-      "cidade": "Goiania"
-    },
-    {
-      "id": "",
-      "nome": "Carolina",
-      "idade": 42,
-      "cidade": "Valparaiso"
+      "id": "2ca0",
+      "nome": "Ze",
+      "idade": 16,
+      "cidade": "Mato Grosso"
     }
   ]
 }

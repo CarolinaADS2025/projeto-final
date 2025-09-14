@@ -1,6 +1,6 @@
 <!-- Botão que abre a Modal -->
 <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
-    Abrir Formulário
+    Novo Cadastro
 </button>
 
 <!-- Modal -->
@@ -37,7 +37,8 @@
                         } @else {
                         <button type="button" class="btn btn-warning" (click)="alterar()">Alterar</button>
                         <button type="button" class="btn btn-danger" (click)="remover()">Remover</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelar()">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            (click)="cancelar()">Cancelar</button>
                         }
                     </div>
                 </form>
@@ -66,8 +67,10 @@
             <td>{{ v.idade }}</td>
             <td>{{ v.cidade }}</td>
             <td>
-                <button type="button" class="btn btn-info btn-sm"
-                    (click)="selecionarPessoa(pessoa.id)">Selecionar</button>
+                <button type="button" class="btn btn-info btn-sm" (click)="selecionarPessoa(v.id || '')"
+                    data-bs-toggle="modal" data-bs-target="#formModal">
+                    Selecionar
+                </button>
             </td>
         </tr>
         }
