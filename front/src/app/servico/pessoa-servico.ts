@@ -31,7 +31,7 @@ selecionarPessoa(id:string):Observable<Pessoa>{
 
 // Alterar pessoas
 alterar(pessoa:Pessoa):Observable<Pessoa>{
-    return this.http.put<Pessoa>(this.apiUrl+pessoa.id, JSON.stringify(pessoa));
+    return this.http.put<Pessoa>(this.apiUrl+pessoa, JSON.stringify(pessoa));
 }
 
 // Remover pessoas

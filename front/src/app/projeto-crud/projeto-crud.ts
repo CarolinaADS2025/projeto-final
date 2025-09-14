@@ -30,6 +30,7 @@ export class ProjetoCrud {
     idade: new FormControl(''),
     cidade: new FormControl('')
   });
+pessoa: any;
 
   // Construtor injeta o serviço responsável pela comunicação com a API
   constructor(private servico: PessoaServico) {}
@@ -58,16 +59,23 @@ export class ProjetoCrud {
     this.servico.listarTodos().subscribe(pessoas => this.vetor = pessoas);
   }
 
-  // Método para selecionar uma pessoa (quando clica no botão "Selecionar")
-  selecionarPessoa(id: string): void {
-    this.servico.selecionarPessoa(id).subscribe(pessoa => {
-      // Preenche o formulário com os dados recebidos da API
-      this.formularioPessoa.patchValue(pessoa);
-
-      // Troca os botões → agora mostra Alterar/Remover
-      this.btnCadastrar = false;
+ // MÃ©todo para selecionar uma pessoa especÃ­fica
+selecionarPessoa(id:string):void{
+  this.servico.selecionarPessoa(id).subscribe(pessoa => {
+    
+        // Disponibiliza um objeto com as características: id, nome, cidade e converte idade para string
+    this.formularioPessoa.patchValue({
+      id: pessoa.id || null,
+      nome: pessoa.nome || null,
+      idade: String(pessoa.idade) ?? 0,
+      cidade: pessoa.cidade || null
     });
-  }
+
+
+    // Visibilidade dos botÃµes
+    this.btnCadastrar = false;
+  });
+}
 
   // Método para cancelar a edição/remoção
   cancelar(): void {
