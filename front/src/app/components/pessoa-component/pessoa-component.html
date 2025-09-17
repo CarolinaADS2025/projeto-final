@@ -16,7 +16,7 @@
 
             <!-- Corpo -->
             <div class="modal-body">
-                <form [formGroup]="formularioPessoa">
+                <form [formGroup]="pessoa">
 
                     <div class="mb-3">
                         <input type="text" placeholder="Nome" class="form-control" formControlName="nome">
@@ -67,7 +67,7 @@
             <td>{{ v.idade }}</td>
             <td>{{ v.cidade }}</td>
             <td>
-                <button type="button" class="btn btn-info btn-sm" (click)="selecionarPessoa(v.id || '')"
+                <button type="button" class="btn btn-info btn-sm" (click)="selecionar(i)"
                     data-bs-toggle="modal" data-bs-target="#formModal">
                     Selecionar
                 </button>
