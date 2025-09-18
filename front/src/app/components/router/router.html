@@ -1,34 +1,74 @@
-<!-- Menu Profissional -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold" routerLink="/">Projeto Final</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/pessoa" routerLinkActive="active">Usuários</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/pessoa" routerLinkActive="active">Cadastre-se</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/relatorios" routerLinkActive="active">Login</a>
-        </li>
-      </ul>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav id="sidebar" class="bg-primary text-white vh-100 p-3 shadow-sm sidebar">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold mb-0 d-flex align-items-center">
+        <i class="bi bi-stack me-2"></i> <span class="sidebar-text">Projeto Final</span>
+      </h4>
+      <button class="btn btn-sm btn-light" id="toggleBtn">
+        <i class="bi bi-list"></i>
+      </button>
     </div>
-  </div>
-</nav>
 
-<!-- Header da Tela Inicial -->
-<header class="bg-light py-4 mb-4 shadow-sm">
-  <div class="container d-flex justify-content-between align-items-center">
-    <h2 class="mb-0">Bem-vinda, Carol!</h2>
-   
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white d-flex align-items-center" 
+           routerLink="/dashboard" routerLinkActive="active">
+          <i class="bi bi-speedometer2 me-2"></i> 
+          <span class="sidebar-text">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white d-flex align-items-center" 
+           routerLink="/pessoa" routerLinkActive="active">
+          <i class="bi bi-people-fill me-2"></i> 
+          <span class="sidebar-text">Usuários</span>
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white d-flex align-items-center" 
+           routerLink="/cadastro" routerLinkActive="active">
+          <i class="bi bi-person-plus-fill me-2"></i> 
+          <span class="sidebar-text">Cadastre-se</span>
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white d-flex align-items-center" 
+           routerLink="/login" routerLinkActive="active">
+          <i class="bi bi-box-arrow-in-right me-2"></i> 
+          <span class="sidebar-text">Login</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <div class="flex-grow-1">
+    <!-- Header -->
+    <header class="bg-light py-3 px-4 shadow-sm d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Bem-vinda, Carol!</h2>
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-box-arrow-right"></i> Sair
+      </button>
+    </header>
+
+    <!-- Exibição das páginas -->
+    <main class="p-4">
+      <router-outlet></router-outlet>
+    </main>
   </div>
-</header>
+</div>
+
+<!-- Import Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("toggleBtn");
+    const sidebar = document.getElementById("sidebar");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+    });
+  });
+</script>

@@ -64,6 +64,7 @@ export class PessoaComponent implements OnInit {
       console.log('Pessoa cadastrada com sucesso:', pessoaCadastrada);
       this.vetor.push(pessoaCadastrada);
       console.table(this.vetor);
+      this.pessoa.reset();
       this.cancelar();
     });
   }
@@ -114,6 +115,7 @@ export class PessoaComponent implements OnInit {
       if (indice >= 0) this.vetor[indice] = pessoaModificada;
       this.vetor = [...this.vetor];
       console.table(this.vetor);
+      this.pessoa.reset();
       this.cancelar();
     });
   }
