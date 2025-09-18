@@ -43,12 +43,7 @@ export class PessoaComponent implements OnInit {
   // Cadastrar nova pessoa (agora com id)
   // ---------------------------
   cadastrar(): void {
-    if (this.pessoa.invalid) {
-      console.log('Formulário inválido no cadastro:', this.pessoa.value);
-      return;
-    }
-
-    const novaPessoa: PessoaModel = {
+      const novaPessoa: PessoaModel = {
       id: this.pessoa.value.id ?? undefined, // <-- agora enviamos o id também
       nome: this.pessoa.value.nome ?? '',
       idade: Number(this.pessoa.value.idade ?? 0),
@@ -95,11 +90,7 @@ export class PessoaComponent implements OnInit {
   }
 
   alterar(): void {
-    if (this.pessoa.invalid) {
-      console.log('Formulário inválido na alteração:', this.pessoa.value);
-      return;
-    }
-
+ 
     const pessoaAtualizada: PessoaModel = {
       id: Number(this.pessoa.value.id ?? 0),
       nome: this.pessoa.value.nome ?? '',
@@ -109,9 +100,9 @@ export class PessoaComponent implements OnInit {
 
     console.log('Enviando atualização:', pessoaAtualizada);
 
-    this.service.atualiza(pessoaAtualizada).subscribe((pessoaModificada) => {
+    this.service.atualiza(this.pessoa.value as PessoaModel).subscribe((pessoaModificada) => {
       console.log('Pessoa modificada recebida do backend:', pessoaModificada);
-      const indice = this.vetor.findIndex(p => Number(p.id) === Number(pessoaModificada.id));
+      const indice = this.vetor.findIndex(p => p.id === Number(pessoaModificada.id));
       if (indice >= 0) this.vetor[indice] = pessoaModificada;
       this.vetor = [...this.vetor];
       console.table(this.vetor);
