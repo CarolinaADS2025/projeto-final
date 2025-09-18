@@ -9,7 +9,7 @@ import { PessoaModel } from '../model/PessoaModel';
 export class PessoaService {
 
   // URL base da API
-  private apiUrl = 'https://back-pjpe.onrender.com/pessoas'; // ajuste conforme sua API
+  private apiUrl = 'https://back-pjpe.onrender.com/pessoas/'; // ajuste conforme sua API
 
   constructor(private http: HttpClient) {}
 
