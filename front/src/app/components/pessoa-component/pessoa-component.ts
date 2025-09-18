@@ -40,18 +40,14 @@ export class PessoaComponent implements OnInit {
   }
 
   // ---------------------------
-  // Cadastrar nova pessoa (agora com id)
+  // Cadastrar nova pessoa
   // ---------------------------
   cadastrar(): void {
-      const novaPessoa: PessoaModel = {
-      id: this.pessoa.value.id ?? undefined, // <-- agora enviamos o id também
+    const novaPessoa: PessoaModel = {
       nome: this.pessoa.value.nome ?? '',
       idade: Number(this.pessoa.value.idade ?? 0),
       cidade: this.pessoa.value.cidade ?? ''
     };
-
-    //remover o id
-    delete novaPessoa.id;
 
     console.log('Enviando para cadastro:', novaPessoa);
 
@@ -73,9 +69,9 @@ export class PessoaComponent implements OnInit {
     console.log('Pessoa selecionada para edição:', p);
 
     this.pessoa.patchValue({
-      id: p.id ?? null,          // agora respeita o tipo number | null
+      id: p.id ?? null,
       nome: p.nome ?? '',
-      idade: p.idade ?? null,    // mantém como number
+      idade: p.idade ?? null,
       cidade: p.cidade ?? ''
     });
 
@@ -89,8 +85,10 @@ export class PessoaComponent implements OnInit {
     this.btnCadastrar = true;
   }
 
+  // ---------------------------
+  // Alterar pessoa
+  // ---------------------------
   alterar(): void {
- 
     const pessoaAtualizada: PessoaModel = {
       id: Number(this.pessoa.value.id ?? 0),
       nome: this.pessoa.value.nome ?? '',
@@ -100,19 +98,22 @@ export class PessoaComponent implements OnInit {
 
     console.log('Enviando atualização:', pessoaAtualizada);
 
-    this.service.atualiza(this.pessoa.value as PessoaModel).subscribe((pessoaModificada) => {
+    this.service.atualiza(pessoaAtualizada).subscribe((pessoaModificada) => {
       console.log('Pessoa modificada recebida do backend:', pessoaModificada);
       const indice = this.vetor.findIndex(p => p.id === Number(pessoaModificada.id));
       if (indice >= 0) this.vetor[indice] = pessoaModificada;
-      this.vetor = [...this.vetor];
+      this.vetor = [...this.vetor]; // força atualização na tela
       console.table(this.vetor);
       this.pessoa.reset();
       this.cancelar();
     });
   }
 
-  remover(): void {
-    const id = Number(this.pessoa.value.id ?? 0);
+  // ---------------------------
+  // Remover pessoa
+  // ---------------------------
+  remover(indice: number): void {
+    const id = Number(this.vetor[indice].id);
     if (!id) {
       console.log('Nenhum ID válido para remover');
       return;
@@ -122,7 +123,8 @@ export class PessoaComponent implements OnInit {
 
     this.service.remove(id).subscribe(() => {
       console.log('Pessoa removida com sucesso. ID:', id);
-      this.vetor = this.vetor.filter(p => Number(p.id) !== id);
+      this.vetor.splice(indice, 1); // remove direto do array
+      this.vetor = [...this.vetor];
       console.table(this.vetor);
       this.cancelar();
     });
