@@ -23,10 +23,13 @@ export class PessoaComponent implements OnInit {
     cidade: new FormControl<string | null>('', [Validators.required, Validators.minLength(3)])
   });
 
+  // Vetor para armazenar pessoas
   vetor: PessoaModel[] = [];
+
+  // Índice da pessoa selecionada
   indicePessoaSelecionada: number = -1;
 
-  constructor(private service: PessoaService) {}
+  constructor(private service: PessoaService) { }
 
   ngOnInit(): void {
     this.listar();
@@ -43,21 +46,13 @@ export class PessoaComponent implements OnInit {
   // Cadastrar nova pessoa
   // ---------------------------
   cadastrar(): void {
-    const novaPessoa: PessoaModel = {
-      nome: this.pessoa.value.nome ?? '',
-      idade: Number(this.pessoa.value.idade ?? 0),
-      cidade: this.pessoa.value.cidade ?? ''
-    };
+    const novaPessoa: PessoaModel = this.pessoa.value as PessoaModel;
 
-    console.log('Enviando para cadastro:', novaPessoa);
+    // Gera ID incremental (se não tiver backend cuidando disso)
+    novaPessoa.id = this.vetor.length > 0 ? (this.vetor[this.vetor.length - 1].id ?? 0) + 1 : 1;
 
-    this.service.cadastra(novaPessoa).subscribe((pessoaCadastrada: PessoaModel) => {
-      console.log('Pessoa cadastrada com sucesso:', pessoaCadastrada);
-      this.vetor.push(pessoaCadastrada);
-      console.table(this.vetor);
-      this.pessoa.reset();
-      this.cancelar();
-    });
+    this.vetor.push(novaPessoa);
+    this.pessoa.reset();
   }
 
   // ---------------------------
@@ -65,19 +60,18 @@ export class PessoaComponent implements OnInit {
   // ---------------------------
   selecionar(indice: number): void {
     this.indicePessoaSelecionada = indice;
-    const p = this.vetor[indice];
-    console.log('Pessoa selecionada para edição:', p);
 
-    this.pessoa.patchValue({
-      id: p.id ?? null,
-      nome: p.nome ?? '',
-      idade: p.idade ?? null,
-      cidade: p.cidade ?? ''
-    });
+    this.pessoa.get('id')?.setValue(this.vetor[indice].id ?? null);
+    this.pessoa.get('nome')?.setValue(this.vetor[indice].nome || '');
+    this.pessoa.get('idade')?.setValue(this.vetor[indice].idade ?? null);
+    this.pessoa.get('cidade')?.setValue(this.vetor[indice].cidade || '');
 
     this.btnCadastrar = false;
   }
 
+  // ---------------------------
+  // Cancelar ações
+  // ---------------------------
   cancelar(): void {
     console.log('Cancelando edição, resetando formulário...');
     this.pessoa.reset();
@@ -89,44 +83,19 @@ export class PessoaComponent implements OnInit {
   // Alterar pessoa
   // ---------------------------
   alterar(): void {
-    const pessoaAtualizada: PessoaModel = {
-      id: Number(this.pessoa.value.id ?? 0),
-      nome: this.pessoa.value.nome ?? '',
-      idade: Number(this.pessoa.value.idade ?? 0),
-      cidade: this.pessoa.value.cidade ?? ''
-    };
-
-    console.log('Enviando atualização:', pessoaAtualizada);
-
-    this.service.atualiza(pessoaAtualizada).subscribe((pessoaModificada) => {
-      console.log('Pessoa modificada recebida do backend:', pessoaModificada);
-      const indice = this.vetor.findIndex(p => p.id === Number(pessoaModificada.id));
-      if (indice >= 0) this.vetor[indice] = pessoaModificada;
-      this.vetor = [...this.vetor]; // força atualização na tela
-      console.table(this.vetor);
-      this.pessoa.reset();
-      this.cancelar();
-    });
+    if (this.indicePessoaSelecionada >= 0) {
+      this.vetor[this.indicePessoaSelecionada] = this.pessoa.value as PessoaModel;
+    }
+    this.cancelar();
   }
 
   // ---------------------------
   // Remover pessoa
   // ---------------------------
-  remover(indice: number): void {
-    const id = Number(this.vetor[indice].id);
-    if (!id) {
-      console.log('Nenhum ID válido para remover');
-      return;
+  remover(): void {
+    if (this.indicePessoaSelecionada >= 0) {
+      this.vetor.splice(this.indicePessoaSelecionada, 1);
     }
-
-    console.log('Removendo pessoa com id:', id);
-
-    this.service.remove(id).subscribe(() => {
-      console.log('Pessoa removida com sucesso. ID:', id);
-      this.vetor.splice(indice, 1); // remove direto do array
-      this.vetor = [...this.vetor];
-      console.table(this.vetor);
-      this.cancelar();
-    });
+    this.cancelar();
   }
 }
